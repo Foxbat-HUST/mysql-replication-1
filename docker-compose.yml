@@ -1,0 +1,16 @@
+version: "3.0"
+services:
+ db-master:
+  image: master
+  container_name: master
+  ports:
+   - 3306:3306
+  volumes:
+   - /var/lib/mysql
+ db-slave:
+  image: slave
+  container_name: slave
+  ports:
+   - 3307:3306
+  volumes:
+   - /var/lib/mysql
