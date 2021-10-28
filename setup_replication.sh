@@ -18,9 +18,10 @@ import master
 #create replica user in master
 printf "Enter password for replica user: \n"
 read -s password
-docker exec -it master ./script/create_user.sh $password
+slave_host=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' slave)
+docker exec -it master ./script/create_user.sh $password $slave_host
 #find binlog coordinates
-docker exec -it master ./script/obtain_binlog_coord.sh
+docker exec -it master ./script/xpt_mst_info.sh
 mst_con_id=$(con_id master)
 docker cp $mst_con_id:/coord.txt ./coord.txt
 #import dump data to slave
